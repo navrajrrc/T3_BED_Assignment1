@@ -64,3 +64,70 @@ export function calculatePortfolioPerformance(
         performanceSummary,
     };
 }
+
+interface Asset {
+    name: string;
+    value: number;
+}
+
+export function largestholdingasset(assets: Asset[]): Asset | null {
+    if (assets.length === 0) return null;
+
+    let largest = assets[0];
+
+    for (const asset of assets) {
+        switch (true) {
+            case asset.value > largest.value:
+                largest = asset;
+                break;
+        }
+    }
+
+    return largest;
+}
+interface Asset{
+    name:string;
+    value: number;
+}
+
+interface Allocation {
+    name:string; 
+    percentage: number;
+}
+
+export function calculateAllocation(assets: Asset[]): Allocation[] {
+    switch(true) {
+        case assets.length === 0:
+            return [];
+        default:
+            break;
+    }
+
+    let total = 0;
+    for (const asset of assets) {
+        total += asset.value;
+    }
+
+    let allocations: Allocation[] = [];
+
+    switch (true) {
+        case total === 0:
+            for (const asset of assets) {
+                allocations.push({
+                    name: asset.name,
+                    percentage:0
+                });
+            }
+            break;
+
+        default:
+            for (const asset of assets) {
+                allocations.push({
+                    name: asset.name,
+                    percentage: (asset.value/ total) * 100
+                });
+            }
+            break;
+    }
+    return allocations;
+}
